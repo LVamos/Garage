@@ -14,7 +14,7 @@ public class Brand
 	/// <summary>
 	/// 	/// The id of the brand.
 	/// 		/// </summary>
-	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+	[DatabaseGenerated(DatabaseGeneratedOption.None)]
 	[System.ComponentModel.DataAnnotations.Key()]
 	public int Id { get; set; }
 

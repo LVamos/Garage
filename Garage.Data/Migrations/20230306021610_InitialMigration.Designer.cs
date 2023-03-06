@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage.Data.Migrations
 {
     [DbContext(typeof(GarageDbContext))]
-    [Migration("20230305175123_InitialMigration")]
+    [Migration("20230306021610_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -31,10 +31,7 @@ namespace Garage.Data.Migrations
             modelBuilder.Entity("Garage.Data.Models.Brand", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -47,6 +44,58 @@ namespace Garage.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Brands");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 0,
+                            Name = "BMW"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Name = "Audi"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Mercedes"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Skoda"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Fiat"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Renault"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Lexus"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Ferrari"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Porsche"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Kia"
+                        });
                 });
 
             modelBuilder.Entity("Garage.Data.Models.Driver", b =>
@@ -90,6 +139,24 @@ namespace Garage.Data.Migrations
                     b.ToTable("drivers");
                 });
 
+            modelBuilder.Entity("Garage.Data.Models.DriverVehicles", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DriverId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DriverId");
+
+                    b.ToTable("DriverVehicles");
+                });
+
             modelBuilder.Entity("Garage.Data.Models.Vehicle", b =>
                 {
                     b.Property<int>("Id")
@@ -99,6 +166,9 @@ namespace Garage.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DriverVehiclesId")
                         .HasColumnType("int");
 
                     b.Property<int>("Engine")
@@ -111,7 +181,20 @@ namespace Garage.Data.Migrations
 
                     b.HasIndex("BrandId");
 
+                    b.HasIndex("DriverVehiclesId");
+
                     b.ToTable("vehicles");
+                });
+
+            modelBuilder.Entity("Garage.Data.Models.DriverVehicles", b =>
+                {
+                    b.HasOne("Garage.Data.Models.Driver", "Driver")
+                        .WithMany()
+                        .HasForeignKey("DriverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Driver");
                 });
 
             modelBuilder.Entity("Garage.Data.Models.Vehicle", b =>
@@ -122,7 +205,16 @@ namespace Garage.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Garage.Data.Models.DriverVehicles", null)
+                        .WithMany("Vehicles")
+                        .HasForeignKey("DriverVehiclesId");
+
                     b.Navigation("Brand");
+                });
+
+            modelBuilder.Entity("Garage.Data.Models.DriverVehicles", b =>
+                {
+                    b.Navigation("Vehicles");
                 });
 #pragma warning restore 612, 618
         }

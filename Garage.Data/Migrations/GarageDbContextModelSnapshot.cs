@@ -28,10 +28,7 @@ namespace Garage.Data.Migrations
             modelBuilder.Entity("Garage.Data.Models.Brand", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -44,6 +41,58 @@ namespace Garage.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Brands");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 0,
+                            Name = "BMW"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Name = "Audi"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Mercedes"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Skoda"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Fiat"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Renault"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Lexus"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Ferrari"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Porsche"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Kia"
+                        });
                 });
 
             modelBuilder.Entity("Garage.Data.Models.Driver", b =>
