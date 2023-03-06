@@ -1,45 +1,30 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Garage.Data.Models;
 
-namespace Garage.Data.Models;
-
-/// <summary>
-/// The type of engine of a vehicle.
-/// </summary>
-public enum EngineType
-{
-	Electric,
-	Diesel,
-	Hybrid
-}
+namespace Garage.Business.Models;
 
 /// <summary>
-/// A vehicle.
+/// A class for vehicle data transfer object.
 /// </summary>
-public class Vehicle
+public class VehicleDto
 {
 	/// <summary>
 	/// The id of the vehicle.
 	/// </summary>
-	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-	[System.ComponentModel.DataAnnotations.Key()]
 	public int Id { get; set; }
 
 	/// <summary>
 	/// Id of the brand of the vehicle.
 	/// </summary>
-	[Required]
 	public int BrandId { get; set; }
 
 	/// <summary>
 	/// The brand of the vehicle.
 	/// </summary>
-	public virtual Brand? Brand { get; set; }
+	public BrandDto? Brand { get; set; }
 
 	/// <summary>
 	/// The year the model was made.
 	/// </summary>
-	[Required]
 	public int ModelYear { get; set; }
 
 	/// <summary>

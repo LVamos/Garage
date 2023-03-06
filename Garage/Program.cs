@@ -1,13 +1,15 @@
+using Garage;
 using Garage.Data;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+builder.Services.AddAutoMapper(typeof(AutomapperConfigurationProfile));
 
 
 // Prepare database.
-string connectionString = builder.Configuration.GetConnectionString("LocalStargateConnection");
+string? connectionString = builder.Configuration.GetConnectionString("LocalStargateConnection");
 builder.Services.AddDbContext<GarageDbContext>(
 	o => o.UseSqlServer(connectionString)
 	.UseLazyLoadingProxies()

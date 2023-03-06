@@ -8,6 +8,9 @@ namespace Garage.Data.Models;
 /// </summary>
 public class DriverVehicles
 {
+	/// <summary>
+	/// The Id of the driver and his vehicles.
+	/// </summary>
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	[System.ComponentModel.DataAnnotations.Key()]
 	public int Id { get; set; }
