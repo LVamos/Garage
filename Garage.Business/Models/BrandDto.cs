@@ -13,5 +13,5 @@ public class BrandDto
 	/// <summary>
 	/// The name of the brand.
 	/// </summary>
-	public string? Name { get; set; }
+	public string Name { get; set; } = string.Empty;
 }

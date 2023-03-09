@@ -4,6 +4,7 @@ using Garage.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage.Data.Migrations
 {
     [DbContext(typeof(GarageDbContext))]
-    partial class GarageDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230308040244_RenameEngineToEngineTypeMigration")]
+    partial class RenameEngineToEngineTypeMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace Garage.Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Brands", (string)null);
+                    b.ToTable("Brands");
 
                     b.HasData(
                         new
@@ -133,7 +136,7 @@ namespace Garage.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("drivers", (string)null);
+                    b.ToTable("drivers");
                 });
 
             modelBuilder.Entity("Garage.Data.Models.DriverVehicles", b =>
@@ -151,7 +154,7 @@ namespace Garage.Data.Migrations
 
                     b.HasIndex("DriverId");
 
-                    b.ToTable("DriverVehicles", (string)null);
+                    b.ToTable("DriverVehicles");
                 });
 
             modelBuilder.Entity("Garage.Data.Models.Vehicle", b =>
@@ -180,7 +183,7 @@ namespace Garage.Data.Migrations
 
                     b.HasIndex("DriverVehiclesId");
 
-                    b.ToTable("vehicles", (string)null);
+                    b.ToTable("vehicles");
                 });
 
             modelBuilder.Entity("Garage.Data.Models.DriverVehicles", b =>

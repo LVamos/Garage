@@ -13,10 +13,10 @@ public class DriverVehiclesDto
 	/// <summary>
 	/// A reference to a driver.
 	/// </summary>
-	public DriverDto? Driver { get; set; }
+	public DriverDto Driver { get; set; } = new();
 
 	/// <summary>
 	/// References to driver's vehicles.
 	/// </summary>
-	public ICollection<VehicleDto?>? Vehicles { get; set; }
+	public List<VehicleInfoDto> VehicleInfo { get; set; } = new List<VehicleInfoDto>();
 }

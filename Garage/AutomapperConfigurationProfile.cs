@@ -18,8 +18,8 @@ public class AutomapperConfigurationProfile : Profile
 		CreateMap<Brand, BrandDto>();
 		CreateMap<BrandDto, Brand>();
 
-		CreateMap<Vehicle, VehicleDto>();
-		CreateMap<VehicleDto, Vehicle>();
+		CreateMap<Vehicle, VehicleInfoDto>();
+		CreateMap<VehicleInfoDto, Vehicle>();
 
 		CreateMap<Driver, DriverDto>();
 		CreateMap<DriverDto, Driver>();

@@ -10,7 +10,8 @@ public enum EngineType
 {
 	Electric,
 	Diesel,
-	Hybrid
+	Hybrid,
+	Petrol
 }
 
 /// <summary>
@@ -45,5 +46,5 @@ public class Vehicle
 	/// <summary>
 	/// Type of the engine in the vehicle.
 	/// </summary>
-	public EngineType Engine { get; set; }
+	public EngineType EngineType { get; set; }
 }

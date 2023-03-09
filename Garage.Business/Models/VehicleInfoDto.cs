@@ -5,7 +5,7 @@ namespace Garage.Business.Models;
 /// <summary>
 /// A class for vehicle data transfer object.
 /// </summary>
-public class VehicleDto
+public class VehicleInfoDto
 {
 	/// <summary>
 	/// The id of the vehicle.
@@ -20,7 +20,7 @@ public class VehicleDto
 	/// <summary>
 	/// The brand of the vehicle.
 	/// </summary>
-	public BrandDto? Brand { get; set; }
+	public BrandDto Brand { get; set; } = new();
 
 	/// <summary>
 	/// The year the model was made.
@@ -30,5 +30,5 @@ public class VehicleDto
 	/// <summary>
 	/// Type of the engine in the vehicle.
 	/// </summary>
-	public EngineType Engine { get; set; }
+	public EngineType EngineType { get; set; }
 }
