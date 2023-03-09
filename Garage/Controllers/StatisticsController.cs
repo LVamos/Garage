@@ -19,13 +19,13 @@ public class StatisticsController : Controller
 	public StatisticsController(IGaragestatistics garagestatistics) => _garagestatistics = garagestatistics;
 
 	[HttpPost("statistics.{format}")]
-	public IActionResult CalculateStatistics([FromBody] DriverVehiclesDto[] info)
+	public IActionResult CalculateStatistics([FromBody] DriverVehiclesDto[] entries, int? minId, int? maxId)
 	{
 		StatisticsResult? result = null;
 
 		try
 		{
-			result = _garagestatistics.CalculateStatistics(info);
+			result = _garagestatistics.CalculateStatistics(entries, minId, maxId);
 		}
 		catch (BrandsNotFoundException e)
 		{

@@ -35,13 +35,38 @@ public class GarageStatistics : IGaragestatistics
 	/// <summary>
 	/// Calculates the statistics of the garage.
 	/// </summary>
-	/// <param name="info">Array of DriverVehicles DTOs</param>
+	/// <param name="entries">Array of DriverVehicles DTOs</param>
+	/// <param name="minId">The lower bound of the interval that defines the set of drivers included in the calculations.</param>
+	/// <param name="maxId">The upper bound of the interval that defines the set of drivers included in the calculations.</param>
 	/// <returns>A StatisticsResult object</returns>
-	public StatisticsResult? CalculateStatistics(DriverVehiclesDto[] info)
+	public StatisticsResult? CalculateStatistics(DriverVehiclesDto[] entries, int? minId, int? maxId)
 	{
-		IEnumerable<VehicleInfoDto> vehicles = info.SelectMany(i => i.VehicleInfo);
+		// Select set of drivers included in the calculations.
+		DriverVehiclesDto[] data = null;
+		if (minId.HasValue && maxId.HasValue)
+		{
+			data =
+				entries.Where(i => i.Id >= minId.Value && i.Id <= maxId.Value)
+				.ToArray<DriverVehiclesDto>();
+		}
+		else if (minId.HasValue)
+		{
+			data =
+				entries.Where(i => i.Id >= minId)
+				.ToArray<DriverVehiclesDto>();
+		}
+		else if (maxId.HasValue)
+		{
+			data =
+				entries.Where(i => i.Id <= maxId)
+				.ToArray<DriverVehiclesDto>();
+		}
+
+		if (data.Length == 0)
+			return null;
 
 		// Validate brand ids.
+		IEnumerable<VehicleInfoDto> vehicles = entries.SelectMany(i => i.VehicleInfo);
 		HashSet<int> invalidIds = new();
 		foreach (int id in vehicles.Select(v => v.BrandId))
 		{
@@ -60,34 +85,34 @@ public class GarageStatistics : IGaragestatistics
 		}
 
 		// Set ids of drivers.
-		foreach (DriverVehiclesDto i in info)
+		foreach (DriverVehiclesDto i in entries)
 			i.Driver.Id = i.Id;
 
 		// Calculate statistics.
 		return new()
 		{
-			AverageAge = GetAverageAge(info),
-			DriversByBirthYear = GetDriversByBirthYear(info),
-			DriversByLastName = GetDriversByLastName(info),
-			MostFrequentBrandNames = GetMostFrequentBrandNames(info),
-			AverageVehicleAgeByBrandName = GetAverageVehicleAgeByBrandName(info),
-			EngineTypePercentage = GetEngineTypePercentage(info),
-			BlueEyedDriversWithHybridOrElectricsVehicles = GetBlueEyedDrivers(info),
-			DriversWithSameEngineType = GetDriversWithSameEngineType(info)
+			AverageAge = GetAverageAge(data),
+			DriversByBirthYear = GetDriversByBirthYear(data),
+			DriversByLastName = GetDriversByLastName(data),
+			MostFrequentBrandNames = GetMostFrequentBrandNames(data),
+			AverageVehicleAgeByBrandName = GetAverageVehicleAgeByBrandName(data),
+			EngineTypePercentage = GetEngineTypePercentage(data),
+			BlueEyedDriversWithHybridOrElectricsVehicles = GetBlueEyedDrivers(data),
+			DriversWithSameEngineType = GetDriversWithSameEngineType(data)
 		};
 	}
 
 	/// <summary>
 	/// Returns ids of drivers that have multiple vehicles and whose vehicles have all the same engine type.
 	/// </summary>
-	/// <param name="info">Array of DriverVehicles DTOs</param>
+	/// <param name="entries">Array of DriverVehicles DTOs</param>
 	/// <returns>Ids of drivers that have multiple vehicles and whose vehicles have all the same engine type.</returns>
-	private int[] GetDriversWithSameEngineType(DriverVehiclesDto?[] info)
+	private int[] GetDriversWithSameEngineType(DriverVehiclesDto?[] entries)
 	{
 		List<int> result = new();
 
 		// Query drivers with multiple vehicles.
-		IEnumerable<DriverVehiclesDto> drivers = info.Where(d => d.VehicleInfo.Count() > 1);
+		IEnumerable<DriverVehiclesDto> drivers = entries.Where(d => d.VehicleInfo.Count() > 1);
 		foreach (DriverVehiclesDto i in drivers)
 		{
 			// Collect drivers with vehicles of same engines.
@@ -103,12 +128,12 @@ public class GarageStatistics : IGaragestatistics
 	/// <summary>
 	/// Returns ids of blue-eyed drivers using wehicles with hybrid or electric engines.
 	/// </summary>
-	/// <param name="info">Array of DriverVehicles DTOs</param>
+	/// <param name="entries">Array of DriverVehicles DTOs</param>
 	/// <returns>Ids of blue-eyed drivers using wehicles with hybrid or electric engines.</returns>
-	private int[] GetBlueEyedDrivers(DriverVehiclesDto[] info)
+	private int[] GetBlueEyedDrivers(DriverVehiclesDto[] entries)
 	{
 		return
-					info.Where(i => i.Driver.EyeColor == "blue")
+					entries.Where(i => i.Driver.EyeColor == "blue")
 					.Where(i => i.VehicleInfo.Any(v => v.EngineType == EngineType.Electric || v.EngineType == EngineType.Hybrid))
 					.Select(i => i.Driver.Id)
 					.ToArray<int>();
@@ -117,20 +142,20 @@ public class GarageStatistics : IGaragestatistics
 	/// <summary>
 	/// Returns percentage of drivers driving vehicles with a specific engine type.
 	/// </summary>
-	/// <param name="info">Array of DriverVehicles DTOs</param>
+	/// <param name="entries">Array of DriverVehicles DTOs</param>
 	/// <returns>Percentage of drivers driving vehicles with a specific engine type.</returns>
-	private Dictionary<EngineType, double> GetEngineTypePercentage(DriverVehiclesDto[] info)
+	private Dictionary<EngineType, double> GetEngineTypePercentage(DriverVehiclesDto[] entries)
 	{
 		Dictionary<EngineType, double> result = new();
 
 		foreach (EngineType engine in Enum.GetValues(typeof(EngineType)))
 		{
-			int engineCount =
-							info
+			double engineCount =
+							entries
 							.Where(i => i.VehicleInfo.Any(v => v.EngineType == engine))
 							.Count();
 
-			result[engine] = engineCount / (info.Length / 100);
+			result[engine] = engineCount / ((double)entries.Length / 100);
 		}
 
 		return result;
@@ -151,18 +176,18 @@ public class GarageStatistics : IGaragestatistics
 	/// <summary>
 	/// Returns average age of the vehicles by brand name.
 	/// </summary>
-	/// <param name="info">Array of DriverVehicles DTOs</param>
+	/// <param name="entries">Array of DriverVehicles DTOs</param>
 	/// <returns>The average age of the vehicles by brand name.</returns>
-	private Dictionary<string, int>? GetAverageVehicleAgeByBrandName(DriverVehiclesDto[] info)
+	private Dictionary<string, int>? GetAverageVehicleAgeByBrandName(DriverVehiclesDto[] entries)
 	{
 		// Get all brands.
 		IEnumerable<string> brandnames =
-		info.SelectMany(i => i!.VehicleInfo!)!
+		entries.SelectMany(i => i!.VehicleInfo!)!
 			.Select(v => v!.Brand!.Name!)
 			.Distinct();
 
 		// All vehicles.
-		var vehicles = info.SelectMany(i => i.VehicleInfo);
+		var vehicles = entries.SelectMany(i => i.VehicleInfo);
 
 		Dictionary<string, int> vehicleAges = new Dictionary<string, int>();
 		foreach (string brand in brandnames)
@@ -179,12 +204,12 @@ public class GarageStatistics : IGaragestatistics
 	/// <summary>
 	/// Returns three most frequent brand names.
 	/// </summary>
-	/// <param name="info">Array of DriverVehicles DTOs</param>
+	/// <param name="entries">Array of DriverVehicles DTOs</param>
 	/// <returns>A string array with three most frequent brand names.</returns>
-	private string[]? GetMostFrequentBrandNames(DriverVehiclesDto[] info)
+	private string[]? GetMostFrequentBrandNames(DriverVehiclesDto[] entries)
 	{
 		IEnumerable<VehicleInfoDto> vehicles =
-			info.SelectMany(i => i.VehicleInfo);
+			entries.SelectMany(i => i.VehicleInfo);
 
 		var groups = vehicles.GroupBy(v => v.Brand.Name)
 		.OrderByDescending(g => g.Count())
@@ -198,12 +223,12 @@ public class GarageStatistics : IGaragestatistics
 	/// <summary>
 	/// Returns drivers grouped by last name.
 	/// </summary>
-	/// <param name="info">Array of DriverVehicles DTOs</param>
+	/// <param name="entries">Array of DriverVehicles DTOs</param>
 	/// <returns>Drivers grouped by last name.</returns>
-	private Dictionary<string, int[]> GetDriversByLastName(DriverVehiclesDto[] info)
+	private Dictionary<string, int[]> GetDriversByLastName(DriverVehiclesDto[] entries)
 	{
 		var groups =
-			info.Select(i => i.Driver)
+			entries.Select(i => i.Driver)
 			.GroupBy(d => d.LastName)
 			.Where(g => g.Count() >= 2)
 			.OrderBy(g => g.Key);
@@ -218,12 +243,12 @@ public class GarageStatistics : IGaragestatistics
 	/// <summary>
 	/// Returns drivers grouped by birth year.
 	/// </summary>
-	/// <param name="info">Array of DriverVehicles DTOs</param>
+	/// <param name="entries">Array of DriverVehicles DTOs</param>
 	/// <returnsDrivers grouped by birth year.></returns>
-	private Dictionary<int, int> GetDriversByBirthYear(DriverVehiclesDto[] info)
+	private Dictionary<int, int> GetDriversByBirthYear(DriverVehiclesDto[] entries)
 	{
 		var groups =
-		info.Select(i => i.Driver)
+		entries.Select(i => i.Driver)
 		.GroupBy(d => d.BirthDate.Year)
 		.OrderBy(g => g.Key);
 
@@ -235,11 +260,11 @@ public class GarageStatistics : IGaragestatistics
 	/// <summary>
 	/// Gets the average age of the drivers.
 	/// </summary>
-	/// <param name="info">DTO array</param>
+	/// <param name="entries">DTO array</param>
 	/// <returns>Rounded average age</returns>
-	private int GetAverageAge(DriverVehiclesDto[] info)
+	private int GetAverageAge(DriverVehiclesDto[] entries)
 	{
-		double averageAge = info.Average(i => GetAge(i.Driver.BirthDate));
+		double averageAge = entries.Average(i => GetAge(i.Driver.BirthDate));
 		return (int)Math.Round(averageAge);
 	}
 }
