@@ -9,7 +9,6 @@ namespace Garage.Data;
 /// </summary>
 public class GarageDbContext : DbContext
 {
-
 	/// <summary>
 	/// Brands of the awailable vehicles.
 	/// </summary>

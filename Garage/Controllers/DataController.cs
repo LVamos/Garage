@@ -16,6 +16,11 @@ namespace Garage.Controllers;
 [FormatFilter]
 public class DataController : Controller
 {
+	/// <summary>
+	/// Gets all drivers.
+	/// </summary>
+	/// <param name="entries"></param>
+	/// <returns></returns>
 	[HttpPost("data.{format}")]
 	public IActionResult SaveData(DriverVehiclesDto[] entries)
 	{
