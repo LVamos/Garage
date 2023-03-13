@@ -42,46 +42,46 @@ public class GarageDbContext : DbContext
 		base.OnModelCreating(modelBuilder);
 
 		modelBuilder.Entity<Brand>().HasData(
-			new Brand
-			{
-				Id = 0,
-				Name = "BMW"
-			},
+				new Brand
+				{
+					Id = 0,
+					Name = "BMW"
+				},
 
-			new Brand
-			{
-				Id = 1,
-				Name = "Audi"
-			},
+				new Brand
+				{
+					Id = 1,
+					Name = "Audi"
+				},
 
-			new Brand()
-			{
-				Id = 2,
-				Name = "Mercedes"
-			},
+				new Brand()
+				{
+					Id = 2,
+					Name = "Mercedes"
+				},
 
-			new Brand
-			{
-				Id = 3,
-				Name = "Skoda"
-			},
+				new Brand
+				{
+					Id = 3,
+					Name = "Skoda"
+				},
 
-			new Brand
-			{
-				Id = 4,
-				Name = "Fiat"
-			},
+				new Brand
+				{
+					Id = 4,
+					Name = "Fiat"
+				},
 
-			new Brand()
-			{
-				Id = 5,
-				Name = "Renault"
-			},
+				new Brand()
+				{
+					Id = 5,
+					Name = "Renault"
+				},
 
-			new Brand { Id = 6, Name = "Lexus" },
-			new Brand { Id = 7, Name = "Ferrari" },
-			new Brand { Id = 8, Name = "Porsche" },
-			new Brand { Id = 9, Name = "Kia" }
-			);
+				new Brand { Id = 6, Name = "Lexus" },
+				new Brand { Id = 7, Name = "Ferrari" },
+				new Brand { Id = 8, Name = "Porsche" },
+				new Brand { Id = 9, Name = "Kia" }
+				);
 	}
 }

@@ -139,10 +139,7 @@ namespace Garage.Data.Migrations
             modelBuilder.Entity("Garage.Data.Models.DriverVehicles", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("DriverId")
                         .HasColumnType("int");

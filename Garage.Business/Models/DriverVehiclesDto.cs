@@ -11,6 +11,11 @@ public class DriverVehiclesDto
 	public int Id { get; set; }
 
 	/// <summary>
+	/// The Id of the driver.
+	/// </summary>
+	public int DriverId { get; set; }
+
+	/// <summary>
 	/// A reference to a driver.
 	/// </summary>
 	public DriverDto Driver { get; set; } = new();
@@ -18,5 +23,5 @@ public class DriverVehiclesDto
 	/// <summary>
 	/// References to driver's vehicles.
 	/// </summary>
-	public List<VehicleInfoDto> VehicleInfo { get; set; } = new List<VehicleInfoDto>();
+	public IList<VehicleInfoDto> VehicleInfo { get; set; } = new List<VehicleInfoDto>();
 }

@@ -5,11 +5,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Garage.Controllers;
 
+/// <summary>
+/// A controller for garage statistics.
+/// </summary>
 [Route("api")]
 [ApiController]
 [FormatFilter]
 public class StatisticsController : Controller
 {
+	/// <summary>
+	/// The class for statistics.
+	/// </summary>
 	private readonly IGaragestatistics _garagestatistics;
 
 	/// <summary>
@@ -18,6 +24,13 @@ public class StatisticsController : Controller
 	/// <param name="garagestatistics">The class for statistics.</param>
 	public StatisticsController(IGaragestatistics garagestatistics) => _garagestatistics = garagestatistics;
 
+	/// <summary>
+	/// Calculates the statistics of the garage.
+	/// </summary>
+	/// <param name="entries">An array of driverVehiclesDto objects</param>
+	/// <param name="minId">Lower bound of driver selection</param>
+	/// <param name="maxId">Upper bound for driver selection</param>
+	/// <returns>IActionResult</returns>
 	[HttpPost("statistics.{format}")]
 	public IActionResult CalculateStatistics([FromBody] DriverVehiclesDto[] entries, int? minId, int? maxId)
 	{

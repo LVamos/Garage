@@ -20,7 +20,7 @@ public class VehicleInfoDto
 	/// <summary>
 	/// The brand of the vehicle.
 	/// </summary>
-	public BrandDto Brand { get; set; } = new();
+	public BrandDto? Brand { get; set; } = new();
 
 	/// <summary>
 	/// The year the model was made.

@@ -47,8 +47,7 @@ namespace Garage.Data.Migrations
                 name: "DriverVehicles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     DriverId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -70,7 +69,7 @@ namespace Garage.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     BrandId = table.Column<int>(type: "int", nullable: false),
                     ModelYear = table.Column<int>(type: "int", nullable: false),
-                    Engine = table.Column<int>(type: "int", nullable: false),
+                    EngineType = table.Column<int>(type: "int", nullable: false),
                     DriverVehiclesId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

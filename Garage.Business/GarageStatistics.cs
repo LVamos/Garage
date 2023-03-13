@@ -39,10 +39,10 @@ public class GarageStatistics : IGaragestatistics
 	/// <param name="minId">The lower bound of the interval that defines the set of drivers included in the calculations.</param>
 	/// <param name="maxId">The upper bound of the interval that defines the set of drivers included in the calculations.</param>
 	/// <returns>A StatisticsResult object</returns>
-	public StatisticsResult? CalculateStatistics(DriverVehiclesDto[] entries, int? minId, int? maxId)
+	public StatisticsResult? CalculateStatistics(DriverVehiclesDto[] entries, int? minId = null, int? maxId = null)
 	{
 		// Select set of drivers included in the calculations.
-		DriverVehiclesDto[] data = null;
+		DriverVehiclesDto[] data = entries;
 		if (minId.HasValue && maxId.HasValue)
 		{
 			data =
@@ -62,7 +62,7 @@ public class GarageStatistics : IGaragestatistics
 				.ToArray<DriverVehiclesDto>();
 		}
 
-		if (data.Length == 0)
+		if (data?.Length == 0)
 			return null;
 
 		// Validate brand ids.
@@ -91,14 +91,14 @@ public class GarageStatistics : IGaragestatistics
 		// Calculate statistics.
 		return new()
 		{
-			AverageAge = GetAverageAge(data),
-			DriversByBirthYear = GetDriversByBirthYear(data),
-			DriversByLastName = GetDriversByLastName(data),
-			MostFrequentBrandNames = GetMostFrequentBrandNames(data),
-			AverageVehicleAgeByBrandName = GetAverageVehicleAgeByBrandName(data),
-			EngineTypePercentage = GetEngineTypePercentage(data),
-			BlueEyedDriversWithHybridOrElectricsVehicles = GetBlueEyedDrivers(data),
-			DriversWithSameEngineType = GetDriversWithSameEngineType(data)
+			AverageAge = GetAverageAge(data!),
+			DriversByBirthYear = GetDriversByBirthYear(data!),
+			DriversByLastName = GetDriversByLastName(data!),
+			MostFrequentBrandNames = GetMostFrequentBrandNames(data!),
+			AverageVehicleAgeByBrandName = GetAverageVehicleAgeByBrandName(data!),
+			EngineTypePercentage = GetEngineTypePercentage(data!),
+			BlueEyedDriversWithHybridOrElectricsVehicles = GetBlueEyedDrivers(data!),
+			DriversWithSameEngineType = GetDriversWithSameEngineType(data!)
 		};
 	}
 
@@ -107,7 +107,7 @@ public class GarageStatistics : IGaragestatistics
 	/// </summary>
 	/// <param name="entries">Array of DriverVehicles DTOs</param>
 	/// <returns>Ids of drivers that have multiple vehicles and whose vehicles have all the same engine type.</returns>
-	private int[] GetDriversWithSameEngineType(DriverVehiclesDto?[] entries)
+	private int[] GetDriversWithSameEngineType(DriverVehiclesDto[] entries)
 	{
 		List<int> result = new();
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage.Data.Migrations
 {
     [DbContext(typeof(GarageDbContext))]
-    [Migration("20230308040244_RenameEngineToEngineTypeMigration")]
-    partial class RenameEngineToEngineTypeMigration
+    [Migration("20230310180033_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -142,10 +142,7 @@ namespace Garage.Data.Migrations
             modelBuilder.Entity("Garage.Data.Models.DriverVehicles", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("DriverId")
                         .HasColumnType("int");

@@ -11,9 +11,14 @@ public class DriverVehicles
 	/// <summary>
 	/// The Id of the driver and his vehicles.
 	/// </summary>
-	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+	[DatabaseGenerated(DatabaseGeneratedOption.None)]
 	[System.ComponentModel.DataAnnotations.Key()]
 	public int Id { get; set; }
+
+	/// <summary>
+	/// The Id of the driver.
+	/// </summary>
+	public int DriverId { get; set; }
 
 	/// <summary>
 	/// A reference to a driver.
@@ -25,5 +30,5 @@ public class DriverVehicles
 	/// References to driver's vehicles.
 	/// </summary>
 	[Required]
-	public virtual ICollection<Vehicle?>? Vehicles { get; set; }
+	public virtual ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
 }
