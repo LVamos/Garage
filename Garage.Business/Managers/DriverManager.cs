@@ -133,13 +133,13 @@ public class DriverManager : IDriverManager
 	}
 
 	/// <summary>
-	/// Finds all drivers with specified birth date.
+	/// Finds all drivers with specified birth year.
 	/// </summary>
-	/// <param name="birthDate">Birth date of the requested drivers</param>
+	/// <param name="birthYear">Birth year of the requested drivers</param>
 	/// <returns>List of drivers or null</returns>
-	public IList<DriverDto>? FindByBirthDate(DateTime birthDate)
+	public IList<DriverDto>? FindByBirthYear(int birthYear)
 	{
-		IList<Driver>? drivers = _driverRepository.FindByBirthDate(birthDate);
+		IList<Driver>? drivers = _driverRepository.FindByBirthYear(birthYear);
 		return _mapper.Map<IList<DriverDto>>(drivers);
 	}
 

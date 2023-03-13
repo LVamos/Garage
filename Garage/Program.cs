@@ -29,9 +29,6 @@ builder.Services.AddScoped<IVehicleManager, VehicleManager>();
 builder.Services.AddScoped<IDriverVehiclesRepository, DriverVehiclesRepository>();
 builder.Services.AddScoped<IDriverVehiclesManager, DriverVehiclesManager>();
 
-
-
-
 // swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
@@ -55,6 +52,7 @@ builder.Services.AddControllers(options => options.SuppressImplicitRequiredAttri
 	.AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())).AddXmlSerializerFormatters();
 
 WebApplication app = builder.Build();
+app.UseDeveloperExceptionPage();
 
 // Swagger
 app.UseSwagger();

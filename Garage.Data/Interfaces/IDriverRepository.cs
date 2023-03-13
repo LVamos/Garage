@@ -16,11 +16,11 @@ public interface IDriverRepository : IBaseRepository<Driver>
 	IList<Driver>? FindByName(string firstName, string lastName);
 
 	/// <summary>
-	/// Finds all drivers with specified birth date.
+	/// Finds all drivers with specified birth year.
 	/// </summary>
-	/// <param name="birthDate">Birth date of the requested drivers</param>
+	/// <param name="birthYear">Birth year of the requested drivers</param>
 	/// <returns>List of drivers or null</returns>
-	IList<Driver>? FindByBirthDate(DateTime birthDate);
+	IList<Driver>? FindByBirthYear(int birthYear);
 
 	/// <summary>
 	/// Finds all drivers from specified city.
